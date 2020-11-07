@@ -1,11 +1,13 @@
 import javax.sound.sampled.Clip;
 
 public abstract class Boss extends Drawable{
+	public enum Type {SLIDE, MISSILE, WING, COMBO};
+
 	private Clip explodedSound = getSound("data/exploded_sound.wav");
 	private Clip shootSound1 = getSound("data/rshoot1.wav");
 	private Clip shootSound2 = getSound("data/rshoot2.wav");
 	protected boolean visible = true;
-	protected int health = 1;
+	protected int health = 60;
 	private int dx = 0;
 	private Direction d = Direction.LEFT;
 	
@@ -46,22 +48,22 @@ public abstract class Boss extends Drawable{
 	public abstract void toggleImage();
 	public abstract int getDelayTime();
 	
-	public boolean makeHit(GreenBullet gb) {
-		if (gb != null &&
-				this.getLocation().x               	 <= gb.getLocation().x +gb.width()  && 
-				this.getLocation().x + this.width()	 >= gb.getLocation().x 	   &&
-				this.getLocation().y				 <= gb.getLocation().y +gb.height() &&
-				this.getLocation().y + this.height() >= gb.getLocation().y ) {
+	public boolean makeHit(PlayerBullet playerBullet) {
+		if (playerBullet != null &&
+				this.getLocation().x               	 <= playerBullet.getLocation().x + playerBullet.width()  && 
+				this.getLocation().x + this.width()	 >= playerBullet.getLocation().x 	   &&
+				this.getLocation().y				 <= playerBullet.getLocation().y + playerBullet.height() &&
+				this.getLocation().y + this.height() >= playerBullet.getLocation().y ) {
 			
-			health = health - gb.power();	
-			gb.setPower(0);
+			health = health - playerBullet.power();	
+			playerBullet.setPower(0);
 			return true;
 		}
 		else
 			return false;
 	}
 	
-	public abstract DarkRaise.Type attack();
+	public abstract Type attack();
 	
 	protected void flashing() {
 		if (visible) {

@@ -19,7 +19,6 @@ public class MegaManGame extends JFrame{
 		super("Mega Man");
 		panel = new Panel();
 		add(panel);
-		
 		JMenuBar menubar = new JMenuBar();
 		JMenu game = new JMenu("Game");
 		JMenu help = new JMenu("Help");
@@ -106,6 +105,7 @@ public class MegaManGame extends JFrame{
 		
 		save.addActionListener(e ->{
 			panel.save();
+			load.setEnabled(true);
 		});
 		
 		load.addActionListener(e -> panel.load() );
@@ -120,24 +120,28 @@ public class MegaManGame extends JFrame{
 			}
 		});
 		
-		control.addActionListener(e ->{
-			panel.pauseGame(true);
-			JOptionPane.showMessageDialog(MegaManGame.this, new JLabel(
-					"<html><hr><b></b>"
-							+ "&#8592; : Move left"
-							+ "<br>&#8593; : Jump"
-							+ "<br>&#8594; : Move Right"
-							+ "<br>&#9251; : Shoot"
-							+ "<hr></html>"));
-			if (!isPaused) {
-				panel.pauseGame(false);
-			}
-		});
+		control.addActionListener(e -> controlDialog());
+
 		setJMenuBar(menubar);
 		setSize(1024,768);
 		setResizable(false);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+		controlDialog();
+	}
+	
+	private void controlDialog() {
+		panel.pauseGame(true);
+		JOptionPane.showMessageDialog(MegaManGame.this, new JLabel(
+				"<html><hr><b></b>"
+						+ "&#8592; : Move left"
+						+ "<br>&#8593; : Jump"
+						+ "<br>&#8594; : Move Right"
+						+ "<br>&#9251; : Shoot"
+						+ "<hr></html>"));
+		if (!isPaused) {
+			panel.pauseGame(false);
+		}
 	}
 	
 	private void quitDialog() {

@@ -25,26 +25,31 @@ public class Panel extends JPanel{
 	private MegaMan player;
 	private Boss boss;
 	private Timer t;
-	private int level = 1;
+	private int level = 2;
 	private boolean bossState = false;
 	private boolean levelUp = false;
 	private boolean isRight= true, gameOver = false;
-	private boolean onGround = false, gravity = true, canJump = true, playerHasJump = false;;
+	private boolean onGround = false, gravity = true, canJump = true, playerHasJump = false;
 	private boolean playerIsMovingLeft, playerIsMovingRight, playerIsJumping, playerIsDucking,
 	playerIsShooting;
 	private boolean canMoveLeft = true, canMoveRight = true;
 	private boolean bossIsSliding = false;
-	private ArrayList<MapObject> map = new ArrayList<MapObject>();
+	private ArrayList<MapObject> map = new ArrayList<>();
 	private ArrayList<Bullet> bullets = new ArrayList<>();
 	private ArrayList<Bullet> bossBullets = new ArrayList<>();
 	private RedRobotBullet rrb; private WingBullet wb;
-	private GreenBullet greenBullet;
+	private PlayerBullet playerBullet;
 	private BlueRobotBullet brb;
 	private TwoGunBullet lg, rg;
 	private Clip music = getSound("data/bgmusic.wav");
 	private int distanceTravel = 0, fallDistance = 0, jump, animationPace = 0, attackPace = 0;
 	
-	private ArrayList<Robot> robots = new ArrayList<Robot>();
+	private int power = 0;
+	private boolean fired = false;
+	private PowerStack powerStack;
+
+	
+	private ArrayList<Robot> robots = new ArrayList<>();
 	private TileMap tileMap = new TileMap();
 	
 	// delete me
@@ -57,9 +62,12 @@ public class Panel extends JPanel{
 		tileMap.generateEnemy(robots, player, level);
 		map = tileMap.getMap();
 		boss = tileMap.generateBoss(level, player);
+//		powerStack = new PowerStack(new Point(player.getLocation().x + player.height() - 10 ,player.getLocation().y + (player.height()/4)), player);
+
 		FloatControl gainControl = 
 			    (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(-15.0f);
+		
 		addKeyListener( new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -84,7 +92,9 @@ public class Panel extends JPanel{
 					playerIsDucking = true;
 				}
 				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					playerIsShooting = true; }
+					playerIsShooting = true;
+				}
+				
 				
 				//TODO delete
 				if(e.getKeyCode() == KeyEvent.VK_S) {
@@ -110,6 +120,30 @@ public class Panel extends JPanel{
 					playerIsDucking = false; }
 				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 					playerIsShooting = false;
+				if(playerBullet == null) {
+					int y = 0;
+					if (power < 30) {
+						y = player.getLocation().y + 30;
+					}
+					else if (power < 60) {
+						y = player.getLocation().y + 15;
+					}
+					else {
+						y = player.getLocation().y ;
+					}
+					if (isRight) {
+						playerBullet = new PlayerBullet(new Point(player.getLocation().x + player.width()/2,
+							y), Drawable.Direction.RIGHT, power);
+					}
+					else {
+						playerBullet = new PlayerBullet(new Point(player.getLocation().x + player.width()/2,
+								y), Drawable.Direction.LEFT, power);
+						playerBullet.setReverse();
+					}
+					player.shoot();
+					power = 0;
+
+				}
 				}
 				
 				//TODO delete
@@ -131,12 +165,12 @@ public class Panel extends JPanel{
 			
 			//TODO delete
 			if(goingDown) {
-				player.move(Drawable.Direction.DOWN, 10);
-				fallDistance += 10;
+				player.move(Drawable.Direction.DOWN, 20);
+				fallDistance += 20;
 			}
 			if(goingUp) {
-				player.move(Drawable.Direction.UP, 10);
-				fallDistance -= 10;
+				player.move(Drawable.Direction.UP, 20);
+				fallDistance -= 20;
 			}
 			alwaysActions();
 			repaint();
@@ -160,6 +194,10 @@ public class Panel extends JPanel{
 			}
 		}
 		
+		if (powerStack != null) {
+			powerStack.paint(g2);
+		}
+		
 	    if(player !=null) {
 	    	player.paint(g2);
 	    }
@@ -173,8 +211,9 @@ public class Panel extends JPanel{
 			}
 		}
 		
-		if(greenBullet != null) {
-			greenBullet.paint(g2);
+	
+		if(playerBullet != null) {
+			playerBullet.paint(g2);
 		}
 		
 		if(rrb != null) {
@@ -202,21 +241,28 @@ public class Panel extends JPanel{
 			}
 		}
 		
+		g.setFont( new Font("Arial", Font.PLAIN, 18 ));
+	    g.setColor(Color.WHITE);
+	    g.drawString("Live: " + player.live(), 20, 30);
+	    
 		g.setColor(Color.RED);
 	    g.drawRect(19,79,26,151);
 		g.setColor(Color.GREEN);
 	    g.fillRect(20, 230 - player.health()*10 , 25, player.health()*10);
-
 		
+
+	    g.fillRect(55, 680, power * 10, 20);
+	    g.setColor(Color.WHITE);
+	    g.drawString("Power", 0, 695);
+
 		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > -800 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			g.setColor(Color.RED);
 		    g.drawRect(899,79,26,151);
 			g.setColor(Color.GREEN);
-			g.fillRect(900, 230 - boss.health()*5 , 25,boss.health()*5);
+			g.fillRect(900, 230 - (int) (boss.health() * 5/ 2) , 25,(int) (boss.health() * 5/ 2));
 		}
-		g.setFont( new Font("Arial", Font.PLAIN, 18 ));
-	    g.setColor(Color.WHITE);
-	    g.drawString("Live: " + player.live(), 20, 30);
+	
+	    
 	    if(gameOver) {
 	    	robots.clear();
 	    	g.setFont( new Font("Arial", Font.PLAIN, 80 ));
@@ -243,7 +289,7 @@ public class Panel extends JPanel{
 			if(jump == 0)
 				gravity =true;
 			if (onGround)
-				if(greenBullet != null)
+				if(playerBullet != null)
 					player.toggleLeftShoot();
 				else 
 					player.toggleLeftImage();
@@ -264,17 +310,15 @@ public class Panel extends JPanel{
 			if(jump == 0)
 				gravity = true;
 			if (onGround)
-				if(greenBullet != null) 
+				if(playerBullet != null) 
 					player.toggleRightShoot();
 				else
 					player.toggleRightImage();
 		}
 		
-		
-		
 		// gravity
 		if (!onGround) {
-			if(greenBullet != null) {
+			if(playerBullet != null) {
 				player.jumpshootImage(isRight);
 			}
 			else {
@@ -285,22 +329,34 @@ public class Panel extends JPanel{
 		}
 		
 		//shooting
-		if(playerIsShooting && greenBullet == null) {
-			player.shoot();
-			if (isRight)
-			greenBullet = new GreenBullet(new Point(player.getLocation().x + player.width()/2,
-					player.getLocation().y + 15 ), Drawable.Direction.RIGHT);
-			else {
-				greenBullet = new GreenBullet(new Point(player.getLocation().x + player.width()/2,
-						player.getLocation().y + 15 ), Drawable.Direction.LEFT);
-				greenBullet.setReverse();
+		if(playerIsShooting && playerBullet == null) {
+			if (power < 90) {
+				power++;
 			}
+//			powerStack.setVisible(true);
 		}
 		
-		if (greenBullet != null) {
-			greenBullet.move();
-			if ((greenBullet.getLocation().x + greenBullet.width()) < 0 || greenBullet.getLocation().x > 1048) {
-				greenBullet = null;
+//		if(powerStack.getVisible()) {
+//			powerStack.toggleImage(isRight);
+//		}
+		
+//		if(playerIsShooting && greenBullet == null) {
+//			if (isRight)
+//			greenBullet = new GreenBullet(new Point(player.getLocation().x + player.width()/2,
+//					player.getLocation().y + 15 ), Drawable.Direction.RIGHT);
+//			else {
+//				greenBullet = new GreenBullet(new Point(player.getLocation().x + player.width()/2,
+//						player.getLocation().y + 15 ), Drawable.Direction.LEFT);
+//				greenBullet.setReverse();
+//			}
+//			player.shoot();
+//
+//		}
+		
+		if (playerBullet != null) {
+			playerBullet.move();
+			if ((playerBullet.getLocation().x + playerBullet.width()) < 0 || playerBullet.getLocation().x > 1048) {
+				playerBullet = null;
 			}
 			if(!playerIsMovingRight && !playerIsMovingLeft && onGround) {
 				player.standShootImage(isRight);
@@ -313,9 +369,9 @@ public class Panel extends JPanel{
 		}
 		
 		// player bullet causes damage.
-		if(greenBullet != null && !robots.isEmpty()) {
+		if(playerBullet != null && !robots.isEmpty()) {
 			for (Robot r: robots) {
-				if(r != null && r.makeHit(greenBullet)) {
+				if(r != null && r.makeHit(playerBullet)) {
 						r.flashing();
 					if(r.hasDied()) {
 						r.disapear();
@@ -333,12 +389,15 @@ public class Panel extends JPanel{
 		if(gravity) {
 			onGround = checkOnGround();
 		}
+		
 		enemyAnimation();
 		AIEnemy();	
 		camera();
+		
+		// hit box for boss
 		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > -800 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			//player bullet cause damage
-			if (greenBullet != null && boss != null && boss.makeHit(greenBullet)) {
+			if (playerBullet != null && boss != null && boss.makeHit(playerBullet)) {
 				boss.flashing();
 				if(boss.hasDied()) {
 					boss.disapear();
@@ -348,6 +407,7 @@ public class Panel extends JPanel{
 			bossState = true;
 			bossAttacking();
 		}		
+		
 		playerBeingAttack();
 		
 		if(playerIsDucking) {
@@ -361,9 +421,11 @@ public class Panel extends JPanel{
 		}
 	
 		checkCanJump();
+		
+		// animation and jump
 		if (jump > 0) {
 			canJump = false;
-			if(greenBullet != null) {
+			if(playerBullet != null) {
 				player.jumpshootImage(isRight);
 			}
 			else {
@@ -379,15 +441,22 @@ public class Panel extends JPanel{
 			}			
 		}
 		
+		// allow player to climb the wall
 		if(playerIsJumping && !canMoveLeft || playerIsJumping && !canMoveRight) {
 			canJump = true;
 		}
+		
+		// climbing animation
 		if(jump != 0 && (!canMoveLeft || !canMoveRight)) {
-			player.climb(greenBullet, isRight);
+			player.climb(playerBullet, isRight);
 		}
+		
+		
+		// Defeat boss move up to the next level.
 		if (boss == null && level <2) {
 			levelUp = true;
 		}
+		
 		if (levelUp) {
 			level++;
 			map.clear();
@@ -401,9 +470,10 @@ public class Panel extends JPanel{
 		}
 	} 
 	
-	// make slowly enemy Animation
 	private void enemyAnimation() {
 		animationPace ++;
+		
+		// make slowly enemy Animation
 		if(animationPace  == 30) {
 			for (Robot r: robots) {
 				if (r != null) {
@@ -450,12 +520,22 @@ public class Panel extends JPanel{
 	
 	//save game
 	public void save() {
-		//TODO save function
+		FileIO.save(this, player, map, robots, boss);
 	}
 	
 	//load game
 	public void load() {
-		//TODO load function
+		t.start();
+		map.clear();
+		robots.clear();
+		bossBullets.clear();
+		boss = null;
+		gameOver = false;
+		gravity = true;
+		bossIsSliding = false;
+		player.setY(player.getLocation().y - 20);
+		fallDistance -= 20;
+		boss = FileIO.load(this, player, map, robots, boss); //Boss will always exist or win game	
 	}
 	
 	//check if collide at left side
@@ -488,6 +568,7 @@ public class Panel extends JPanel{
 		return true;
 	}
 	
+	// enemies move and attack.
 	private void AIEnemy() {
 		attackPace++;
 		//slow down the animations
@@ -504,6 +585,7 @@ public class Panel extends JPanel{
 	
 	// Focus the player
 	private void camera () {
+		
 		//player moving right
 		if (distanceTravel > 0) {
 			for (Drawable dr: map) {
@@ -515,8 +597,8 @@ public class Panel extends JPanel{
 			if(boss!= null) {
 				boss.move(Drawable.Direction.LEFT, 5);
 			}	
-			if (greenBullet != null && greenBullet.getDirection() == Drawable.Direction.LEFT) {
-				greenBullet.move(greenBullet.getDirection(), 5);
+			if (playerBullet != null && playerBullet.getDirection() == Drawable.Direction.LEFT) {
+				playerBullet.move(playerBullet.getDirection(), 5);
 			}
 			if (rrb != null && rrb.direction() == Drawable.Direction.LEFT) {
 				rrb.move(rrb.direction(), 5);
@@ -546,6 +628,7 @@ public class Panel extends JPanel{
 			player.move(Drawable.Direction.LEFT, 5);
 			distanceTravel -=5;
 		}
+		
 		// player Moving Left
 		if (distanceTravel < 0) {
 			for (Drawable dr: map) {
@@ -560,8 +643,8 @@ public class Panel extends JPanel{
 				boss.move(Drawable.Direction.RIGHT, 5);
 			}
 			
-			if (greenBullet != null &&greenBullet.getDirection() == Drawable.Direction.RIGHT) {
-				greenBullet.move(greenBullet.getDirection(), 5);
+			if (playerBullet != null && playerBullet.getDirection() == Drawable.Direction.RIGHT) {
+				playerBullet.move(playerBullet.getDirection(), 5);
 			}
 			if (wb != null&& wb.direction() == Drawable.Direction.RIGHT) {
 				wb.move(wb.direction(), 5);
@@ -605,8 +688,8 @@ public class Panel extends JPanel{
 			if(boss!= null) {
 				boss.move(Drawable.Direction.UP, 5);
 			}
-			if (greenBullet != null) {
-				greenBullet.move(Drawable.Direction.UP,5);
+			if (playerBullet != null) {
+				playerBullet.move(Drawable.Direction.UP,5);
 			}
 			if (wb != null) {
 				wb.move(Drawable.Direction.UP,5);
@@ -644,8 +727,8 @@ public class Panel extends JPanel{
 			if(boss!= null) {
 				boss.move(Drawable.Direction.DOWN, 5);
 			}
-			if (greenBullet != null) {
-				greenBullet.move(Drawable.Direction.DOWN,5);
+			if (playerBullet != null) {
+				playerBullet.move(Drawable.Direction.DOWN,5);
 			}
 			if (wb != null) {
 				wb.move(Drawable.Direction.DOWN, 5);
@@ -753,7 +836,7 @@ public class Panel extends JPanel{
 			player.makeHit(bullets, robots, boss, bossBullets);
 			bullets.clear();
 		}
-		else {
+		else { // player is frozen and becomes invulnerable after getting hit
 			player.setInvulnerableTime(player.getInvulnerableTime()-1);
 			if (player.getInvulnerableTime() == 99) {
 				player.setHspeed(0);
@@ -774,17 +857,14 @@ public class Panel extends JPanel{
 	
 	private void checkCanJump() {
 		for (MapObject dr: map) {
-			if (dr.visible) {	
-					if ((player.getLocation().y - (dr.getLocation().y + dr.height())<= 10)
-							&& ((player.getLocation().y - (dr.getLocation().y + dr.height())) > 0)
-							&& ( dr.getLocation().x <= player.getLocation().x + player.width()/2) && (player.getLocation().x < dr.getLocation().x + dr.width())) {
-						jump = 0;
-						gravity = true;
-						break;
-					}
-				}
-				
+			if ((dr.visible) &&(player.getLocation().y - (dr.getLocation().y + dr.height())<= 10)
+					&& ((player.getLocation().y - (dr.getLocation().y + dr.height())) > 0)
+					&& ( dr.getLocation().x <= player.getLocation().x + player.width()/2) && (player.getLocation().x < dr.getLocation().x + dr.width())) {
+				jump = 0;
+				gravity = true;
+				break;
 			}
+		}
 	}
 	
 	// Enemies attack player

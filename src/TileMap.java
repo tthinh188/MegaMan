@@ -117,7 +117,50 @@ public class TileMap {
 		
 		//TODO create level 2 map
 		else if (level ==2) {
+			for (int i = 0; i < 29; i++) {
+				map.add(new Ceiling(i*91, 31));
+			}
+			for(int i = 1; i < 45; i++) {
+				map.add(new RightRock(74,(i*31)));
+				map.add(new FlatRock(0,i*31));
+				map.add(new LeftRock(2639,(i*31)));
+				map.add(new FlatRock(2721,(i)*31));
+				map.add(new FlatRock(2795,(i)*31));
+				map.add(new FlatRock(2869,(i)*31));
+				map.add(new FlatRock(2943,(i)*31));
+				map.add(new FlatRock(3017,(i)*31));
+				map.add(new FlatRock(3091,(i)*31));
+				map.add(new RightRock(3165,(i)*31));
+			}
 			
+			for(int i =0; i < 44 ; i++) {
+				map.add(new FlatRock(i*74,0));
+				map.add(new FlatRock(74*i,1395));
+				map.add(new FlatRock(74*i,1426));
+				map.add(new FlatRock(74*i,1457));
+				map.add(new FlatRock(74*i,1488));
+				map.add(new FlatRock(74*i,1519));
+			}
+			for(int i =0; i < 33; i++) {
+				map.add(new FlatRock(i*74,651));
+				map.add(new FlatRock(i*74,682));
+				map.add(new FlatRock(i*74,713));
+				map.add(new FlatRock(i*74,734));
+				map.add(new FlatRock(i*74,765));
+				map.add(new FlatRock(i*74,796));
+				map.add(new FlatRock(i*74,827));
+				map.add(new FlatRock(i*74,858));
+				map.add(new FlatRock(i*74,889));
+			}
+			for(int i =0; i < 8; i++) {
+				map.add(new LeftRock(800, (i*31) + 403));
+				map.add(new FlatRock((i*74) + 882, 403));
+				map.add(new FlatRock((i*74) + 882, 434));
+			}
+			
+			map.add(new LeftEdge(1300,1335));
+			map.add(new RightEdge(1390,1335));
+			map.add(new FlatRock(1345,1368));
 		}
 		
 		
@@ -155,7 +198,7 @@ public class TileMap {
 		}
 		else {
 			// TODO create boss Level2
-			return new DarkRaise(170,1230, player);
+			return new Bear(170,1225, player);
 
 		}
 	}

@@ -10,7 +10,6 @@ public class DarkRaise extends Boss{
 	private int animationTime = 0;
 	private int random;
 	private boolean isFiring = false;
-	public enum Type {SLIDE, MISSILE, WING, COMBO};
 	private Type type;
 	public DarkRaise(int x, int y, MegaMan player) {
 		setX(x);

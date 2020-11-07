@@ -204,7 +204,7 @@ public class MegaMan extends Drawable{
 		duckingLeft = ImageTransparent.makeTransparent(getImage("data/mega_ducking_left.png"));
 	}
 	
-	public void climb(GreenBullet gb, boolean isRight) {
+	public void climb(PlayerBullet gb, boolean isRight) {
 		if (invulnerableTime < 50) {
 			if(gb == null) {
 				if (isRight) {

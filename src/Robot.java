@@ -78,16 +78,16 @@ public abstract class Robot extends Drawable {
 	
 	public abstract void toggleImage();
 	
-	public boolean makeHit(GreenBullet gb) {
-		if (gb != null &&
-				this.getLocation().x               	 <= gb.getLocation().x +gb.width()  && 
-				this.getLocation().x + this.width()	 >= gb.getLocation().x 	   &&
-				this.getLocation().y				 <= gb.getLocation().y +gb.height() &&
-				this.getLocation().y + this.height() >= gb.getLocation().y ) {
+	public boolean makeHit(PlayerBullet playerBullet) {
+		if (playerBullet != null &&
+				this.getLocation().x               	 <= playerBullet.getLocation().x + playerBullet.width()  && 
+				this.getLocation().x + this.width()	 >= playerBullet.getLocation().x 	   &&
+				this.getLocation().y				 <= playerBullet.getLocation().y + playerBullet.height() &&
+				this.getLocation().y + this.height() >= playerBullet.getLocation().y ) {
 				
 			
-			health = health - gb.power();	
-			gb.setPower(0);
+			health = health - playerBullet.power();	
+			playerBullet.setPower(0);
 			return true;
 		}
 		else
