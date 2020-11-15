@@ -25,7 +25,7 @@ public class Panel extends JPanel{
 	private MegaMan player;
 	private Boss boss;
 	private Timer t;
-	private int level = 2;
+	private int level = 1;
 	private boolean bossState = false;
 	private boolean levelUp = false;
 	private boolean isRight= true, gameOver = false;
@@ -45,7 +45,7 @@ public class Panel extends JPanel{
 	private int distanceTravel = 0, fallDistance = 0, jump, animationPace = 0, attackPace = 0;
 	
 	private int power = 0;
-	private boolean fired = false;
+//	private boolean fired = false;
 	private PowerStack powerStack;
 
 	
@@ -255,7 +255,7 @@ public class Panel extends JPanel{
 	    g.setColor(Color.WHITE);
 	    g.drawString("Power", 0, 695);
 
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > -800 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			g.setColor(Color.RED);
 		    g.drawRect(899,79,26,151);
 			g.setColor(Color.GREEN);
@@ -395,7 +395,7 @@ public class Panel extends JPanel{
 		camera();
 		
 		// hit box for boss
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > -800 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > -830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			//player bullet cause damage
 			if (playerBullet != null && boss != null && boss.makeHit(playerBullet)) {
 				boss.flashing();

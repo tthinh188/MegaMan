@@ -115,8 +115,8 @@ public class TileMap {
 		}
 		
 		
-		//TODO create level 2 map
 		else if (level ==2) {
+			
 			for (int i = 0; i < 29; i++) {
 				map.add(new Ceiling(i*91, 31));
 			}
@@ -197,7 +197,6 @@ public class TileMap {
 			return new DarkRaise(3200,395, player); 
 		}
 		else {
-			// TODO create boss Level2
 			return new Bear(170,1225, player);
 
 		}

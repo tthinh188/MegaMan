@@ -6,7 +6,7 @@ public class DarkRaise extends Boss{
 	private Image slideA, slideB, slideLeftA, slideLeftB;
 	private Image fireA, fireB, fireLeftA, fireLeftB;
 	private MegaMan player;
-	private int delayTime = 0;
+	private int delayTime = 250;
 	private int animationTime = 0;
 	private int random;
 	private boolean isFiring = false;

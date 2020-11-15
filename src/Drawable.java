@@ -53,7 +53,7 @@ public abstract class Drawable {
 	        URL url = getClass().getResource(filename);
 	        ImageIcon icon = new ImageIcon( url );
 	        return icon.getImage();
-	    }
+	}
 	
     public Point getLocation(){
     	return new Point(x,y);
