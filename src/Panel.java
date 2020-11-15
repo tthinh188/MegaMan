@@ -25,7 +25,7 @@ public class Panel extends JPanel{
 	private MegaMan player;
 	private Boss boss;
 	private Timer t;
-	private int level = 1;
+	private int level = 2;
 	private boolean bossState = false;
 	private boolean levelUp = false;
 	private boolean isRight= true, gameOver = false;
@@ -62,7 +62,6 @@ public class Panel extends JPanel{
 		tileMap.generateEnemy(robots, player, level);
 		map = tileMap.getMap();
 		boss = tileMap.generateBoss(level, player);
-//		powerStack = new PowerStack(new Point(player.getLocation().x + player.height() - 10 ,player.getLocation().y + (player.height()/4)), player);
 
 		FloatControl gainControl = 
 			    (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);

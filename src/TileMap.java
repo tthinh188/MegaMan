@@ -117,10 +117,16 @@ public class TileMap {
 		
 		else if (level ==2) {
 			
+			map.add(new Gate(145,1400));
+			map.add(new Gate(205,1400));
+			map.add(new Gate(265,1400));
+			map.add(new Gate(325,1400));
+			map.add(new Gate(385,1400));
+
 			for (int i = 0; i < 29; i++) {
 				map.add(new Ceiling(i*91, 31));
 			}
-			for(int i = 1; i < 45; i++) {
+			for(int i = 1; i < 72; i++) {
 				map.add(new RightRock(74,(i*31)));
 				map.add(new FlatRock(0,i*31));
 				map.add(new LeftRock(2639,(i*31)));
@@ -133,14 +139,42 @@ public class TileMap {
 				map.add(new RightRock(3165,(i)*31));
 			}
 			
-			for(int i =0; i < 44 ; i++) {
+			for(int i = 0; i < 44 ; i++) {
 				map.add(new FlatRock(i*74,0));
+			}
+			
+			for(int i = 50; i < 64; i++) {
+				map.add(new FlatRock(1184,(i)*31));
+				map.add(new FlatRock(1258,(i)*31));
+				map.add(new FlatRock(1332,(i)*31));
+				map.add(new FlatRock(1406,(i)*31));
+				map.add(new FlatRock(1480,(i)*31));
+				map.add(new FlatRock(1554,(i)*31));
+				map.add(new FlatRock(1628,(i)*31));
+
+			}
+			
+			for(int i = 0; i < 23; i++) {
+				map.add(new FlatRock(74*i,2232));
+				map.add(new FlatRock(74*i,2201));
+				map.add(new FlatRock(74*i,2170));
+				map.add(new FlatRock(74*i,2139));
+				map.add(new FlatRock(74*i,2108));
+				map.add(new FlatRock(74*i,2077));
+				map.add(new FlatRock(74*i,2046));
+				map.add(new FlatRock(74*i,2015));
+				map.add(new FlatRock(74*i,1984));
+			}
+			
+			
+			for(int i = 6; i < 30 ; i++) {
 				map.add(new FlatRock(74*i,1395));
 				map.add(new FlatRock(74*i,1426));
 				map.add(new FlatRock(74*i,1457));
 				map.add(new FlatRock(74*i,1488));
 				map.add(new FlatRock(74*i,1519));
 			}
+
 			for(int i =0; i < 33; i++) {
 				map.add(new FlatRock(i*74,651));
 				map.add(new FlatRock(i*74,682));
@@ -197,7 +231,7 @@ public class TileMap {
 			return new DarkRaise(3200,395, player); 
 		}
 		else {
-			return new Bear(170,1225, player);
+			return new Bear(950,1805, player);
 
 		}
 	}

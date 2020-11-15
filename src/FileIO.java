@@ -19,7 +19,7 @@ public class FileIO {
 					info += String.format("%s, %d, %d, %s", mo.getTag(),mo.getLocation().x, mo.getLocation().y, String.valueOf(mo.visible) ) + System.lineSeparator();
 				}
 				else {
-				info += String.format("%s, %d, %d", mo.getTag(),mo.getLocation().x, mo.getLocation().y )+ System.lineSeparator();
+					info += String.format("%s, %d, %d", mo.getTag(),mo.getLocation().x, mo.getLocation().y )+ System.lineSeparator();
 				}
 			}
 			
