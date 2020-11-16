@@ -46,8 +46,6 @@ public class Panel extends JPanel{
 	
 	private int power = 0;
 //	private boolean fired = false;
-	private PowerStack powerStack;
-
 	
 	private ArrayList<Robot> robots = new ArrayList<>();
 	private TileMap tileMap = new TileMap();
@@ -191,10 +189,6 @@ public class Panel extends JPanel{
 			for (Drawable go: map) {
 				go.paint(g2);
 			}
-		}
-		
-		if (powerStack != null) {
-			powerStack.paint(g2);
 		}
 		
 	    if(player !=null) {
@@ -394,7 +388,7 @@ public class Panel extends JPanel{
 		camera();
 		
 		// hit box for boss
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > -830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			//player bullet cause damage
 			if (playerBullet != null && boss != null && boss.makeHit(playerBullet)) {
 				boss.flashing();
@@ -934,8 +928,8 @@ public class Panel extends JPanel{
 	private void bossAttacking() {	
 		robots.clear();
 		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > -800 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
-			DarkRaise.Type type = boss.attack();
-			if(type == DarkRaise.Type.MISSILE) {
+			Boss.Type type = boss.attack();
+			if(type == Boss.Type.MISSILE) {
 				if (boss.getDelayTime() == 200) {
 					bossBullets.add(new Missile(new Point(0,boss.getLocation().y -300), Drawable.Direction.RIGHT));
 					bossBullets.add(new Missile(new Point(0,boss.getLocation().y -150), Drawable.Direction.RIGHT));
@@ -949,14 +943,20 @@ public class Panel extends JPanel{
 					bossBullets.add(new Missile(new Point(1000,boss.getLocation().y + 300), Drawable.Direction.LEFT));
 				}
 			}
-			else if (type == DarkRaise.Type.WING) {
+			else if (type == Boss.Type.WING) {
 				bossBullets.add(new WingBullet(new Point(0,boss.getLocation().y), Drawable.Direction.RIGHT));
 				bossBullets.add(new WingBullet(new Point(1000,boss.getLocation().y - 100), Drawable.Direction.LEFT));
 				bossBullets.add(new WingBullet(new Point(1000,boss.getLocation().y + 100), Drawable.Direction.LEFT));
 				bossBullets.add(new WingBullet(new Point((player.getLocation().x + boss.getLocation().x)/2,0), Drawable.Direction.DOWN));
 				bossBullets.add(new WingBullet(new Point((player.getLocation().x + boss.getLocation().x)/2,768), Drawable.Direction.UP));
 			}
-			else if (type == DarkRaise.Type.COMBO) {
+			else if (type == Boss.Type.ICE) {
+				bossBullets.add(new IceBerg(new Point(player.getLocation().x,0)));
+			}
+			else if (type == Boss.Type.FIRE) {
+				bossBullets.add(new Fire(new Point(boss.getLocation().x,boss.getLocation().y + 120)));
+			}
+			else if (type == Boss.Type.COMBO) {
 				if (boss.getDelayTime() == 500) {
 					bossBullets.add(new WingBullet(new Point(1048,boss.getLocation().y+ 20), Drawable.Direction.LEFT));
 					bossBullets.add(new WingBullet(new Point(1048,boss.getLocation().y + 70), Drawable.Direction.LEFT));
@@ -984,7 +984,7 @@ public class Panel extends JPanel{
 					bossBullets.add(new TwoGunBullet(new Point(1048,50), Drawable.Direction.LEFT));
 				}				
 			}
-			else if (type == DarkRaise.Type.SLIDE)	{
+			else if (type == Boss.Type.SLIDE)	{
 				if(boss.getDelayTime() == 400) {
 					bossIsSliding = true;
 				}

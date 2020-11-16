@@ -143,7 +143,7 @@ public class TileMap {
 				map.add(new FlatRock(i*74,0));
 			}
 			
-			for(int i = 50; i < 64; i++) {
+			for(int i = 50; i < 66; i++) {
 				map.add(new FlatRock(1184,(i)*31));
 				map.add(new FlatRock(1258,(i)*31));
 				map.add(new FlatRock(1332,(i)*31));
@@ -162,8 +162,7 @@ public class TileMap {
 				map.add(new FlatRock(74*i,2108));
 				map.add(new FlatRock(74*i,2077));
 				map.add(new FlatRock(74*i,2046));
-				map.add(new FlatRock(74*i,2015));
-				map.add(new FlatRock(74*i,1984));
+
 			}
 			
 			
@@ -231,7 +230,7 @@ public class TileMap {
 			return new DarkRaise(3200,395, player); 
 		}
 		else {
-			return new Bear(950,1805, player);
+			return new Bear(950,1870, player);
 
 		}
 	}

@@ -6,11 +6,12 @@ public class DarkRaise extends Boss{
 	private Image slideA, slideB, slideLeftA, slideLeftB;
 	private Image fireA, fireB, fireLeftA, fireLeftB;
 	private MegaMan player;
-	private int delayTime = 250;
+	private int delayTime = 150;
 	private int animationTime = 0;
 	private int random;
 	private boolean isFiring = false;
 	private Type type;
+	
 	public DarkRaise(int x, int y, MegaMan player) {
 		setX(x);
 		setY(y);
@@ -129,11 +130,16 @@ public class DarkRaise extends Boss{
 			else {
 				type = Type.COMBO;
 				delayTime = 500;
+				isFiring = true;
+				toggleImage();
 				return type;
 			}
 		}
 		else {
 			delayTime--;
+			if (delayTime == 100) {
+				isFiring = false;
+			}
 			if(delayTime == 200 && type == Type.MISSILE) {
 				this.shoot2();
 				return type;
@@ -158,9 +164,7 @@ public class DarkRaise extends Boss{
 				setHeight(getImage("data/boss_left.png").getHeight(null));
 				return type;
 			}
-			if (delayTime == 100) {
-				isFiring = false;
-			}
+		
 		}
 		return null;
 	}

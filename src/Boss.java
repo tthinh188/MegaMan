@@ -1,7 +1,7 @@
 import javax.sound.sampled.Clip;
 
 public abstract class Boss extends Drawable{
-	public enum Type {SLIDE, MISSILE, WING, COMBO};
+	public enum Type {SLIDE, MISSILE, WING, COMBO, ICE, FIRE};
 
 	private Clip explodedSound = getSound("data/exploded_sound.wav");
 	private Clip shootSound1 = getSound("data/rshoot1.wav");
