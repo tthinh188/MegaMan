@@ -126,8 +126,7 @@ public class Bear extends Boss{
 
 	@Override
 	public void paint(Graphics2D g) {
-		if (visible)
+		if (isVisible())
 	        g.drawImage(currentImage, getLocation().x, getLocation().y, null);
 	}
-
 }

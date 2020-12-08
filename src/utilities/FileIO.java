@@ -36,6 +36,7 @@ public class FileIO {
 				info += String.format("%s, %d, %d, %d, %d", boss.getTag(), boss.getLocation().x, boss.getLocation().y, boss.health(), boss.getDx());
 			}
 			writer.write(info);
+			file.close();
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -49,7 +50,8 @@ public class FileIO {
 			String levelInfo = scanner.nextLine();
 			String[] token = levelInfo.split(", ");
 			panel.setLevel(Integer.valueOf(token[0]));
-			if(token[1].equals("true")) {
+			
+			if (token[1].equals("true")) {
 				panel.setState(true);
 			}
 			else {
@@ -130,6 +132,7 @@ public class FileIO {
 				}
 			}
 			scanner.close();
+			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

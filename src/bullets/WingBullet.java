@@ -41,6 +41,7 @@ public class WingBullet extends Bullet {
 	}
 
 	@Override
-	public void toggleImage(Direction d) {}
-
+	public void toggleImage(Direction d) {
+		// there is no animation for this type of bullet.
+	}
 }

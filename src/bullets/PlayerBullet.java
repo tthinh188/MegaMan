@@ -45,24 +45,6 @@ public class PlayerBullet extends Drawable {
 			setWidth(image.getWidth(null));
 			image = ImageTransparent.makeTransparent(image);
 			break;
-//		if(this.power == 1) {
-//			image = getImage("../data/player_bullet1.png");
-//			setHeight(image.getHeight(null));
-//			setWidth(image.getWidth(null));
-//			image = ImageTransparent.makeTransparent(image);
-//		}
-//		else if(this.power == 2) {
-//			image = getImage("../data/player_bullet2.png");
-//			setHeight(image.getHeight(null));
-//			setWidth(image.getWidth(null));
-//			image = ImageTransparent.makeTransparent(image);
-//		}
-//		else if (this.power == 3) {
-//			
-//		}
-//		else {
-//			
-//		}
 		}
 	}
 	
@@ -92,7 +74,6 @@ public class PlayerBullet extends Drawable {
 				break;
 		}
 			
-		
 	}
 	@Override
 	public void paint(Graphics2D g) {
@@ -106,6 +87,4 @@ public class PlayerBullet extends Drawable {
 	public Direction getDirection() {
 		return direction;
 	}
-	
-	
 }

@@ -27,7 +27,7 @@ import utilities.*;
 import objects.*;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel{
+public class Panel extends JPanel {
 	private BackGround bg = new BackGround();
 	private MegaMan player;
 	private Boss boss;
@@ -35,7 +35,7 @@ public class Panel extends JPanel{
 	private int level = 1;
 	private boolean bossState = false;
 	private boolean levelUp = false;
-	private boolean isRight= true, gameOver = false;
+	private boolean isRight= true, gameOver = false, winGame = false;
 	private boolean onGround = false, gravity = true, canJump = true, playerHasJump = false;
 	private boolean playerIsMovingLeft, playerIsMovingRight, playerIsJumping, playerIsDucking,
 	playerIsShooting;
@@ -53,9 +53,13 @@ public class Panel extends JPanel{
 	
 	private int power = 0;
 	private boolean fire = false;
+	private int levelUpDelay = 100;
 	
 	private ArrayList<Robot> robots = new ArrayList<>();
 	private TileMap tileMap = new TileMap();
+	
+	private static final String ARIAL = "Arial";
+	private String defeat = "";
 	
 	// TODO delete me
 	boolean goingDown = false, goingUp = false;
@@ -247,7 +251,7 @@ public class Panel extends JPanel{
 		}
 		
 		// displaying informations.
-		g.setFont( new Font("Arial", Font.PLAIN, 18 ));
+		g.setFont( new Font(ARIAL, Font.PLAIN, 18 ));
 	    g.setColor(Color.WHITE);
 	    g.drawString("Live: " + player.live(), 20, 30);
 	    
@@ -259,22 +263,42 @@ public class Panel extends JPanel{
 	    g.fillRect(55, 680, power * 10, 20);
 	    g.setColor(Color.WHITE);
 	    g.drawString("Power", 0, 695);
+	    
+	    g.setFont( new Font(ARIAL, Font.PLAIN, 40 ));
+	    g.setColor(Color.GREEN);
+	    g.drawString(defeat, 220, 400);
 
 	    // entering the boss battle show up boss's health.
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			g.setColor(Color.RED);
 		    g.drawRect(899,79,26,151);
 			g.setColor(Color.GREEN);
-			g.fillRect(900, 230 - (int) (boss.health() * 5/ 2) , 25,(int) (boss.health() * 5/ 2));
+			
+			int health = boss.health() * 5 / 2;
+			g.fillRect(900, 230 - health , 25, health);
 		}
 	
-	    
 	    if(gameOver) {
 	    	robots.clear();
-	    	g.setFont( new Font("Arial", Font.PLAIN, 80 ));
+	    	g.setFont( new Font(ARIAL, Font.PLAIN, 80 ));
 		    g.setColor(Color.GREEN);
 		    g.drawString("Game Over", 320, 400);
 		    t.stop();
+	    }
+	    
+	    if(winGame) {
+	    	robots.clear();
+	    	g.setFont( new Font(ARIAL, Font.PLAIN, 80 ));
+		    g.setColor(Color.GREEN);
+		    g.drawString("You Win", 320, 400);
+		    
+		    if(levelUpDelay == 0) {
+		    	t.stop();
+		    }
+		    else {
+		    	levelUpDelay--;
+		    }
+		   
 	    }
 	}
 	
@@ -283,7 +307,7 @@ public class Panel extends JPanel{
 		canMoveLeft = checkCanMoveLeft();
 		canMoveRight = checkCanMoveRight();
 		// moving left
-		if(playerIsMovingLeft){
+		if(playerIsMovingLeft && !levelUp){
 			if(!canMoveLeft) {
 				player.setVspeed(0);
 			}
@@ -302,7 +326,7 @@ public class Panel extends JPanel{
 		}
 		
 		// moving right
-		if(playerIsMovingRight){
+		if(playerIsMovingRight && !levelUp){
 			if(!canMoveRight) {
 				player.setVspeed(0);
 			}
@@ -335,10 +359,8 @@ public class Panel extends JPanel{
 		}
 		
 		// player is stacking power
-		if(playerIsShooting && playerBullet == null) {
-			if (power < 90) {
-				power++;
-			}
+		if(playerIsShooting && playerBullet == null && power < 90) {
+			power++;
 		}
 		
 		// check if player is shooting and show animation.
@@ -383,7 +405,7 @@ public class Panel extends JPanel{
 		camera();
 		
 		// hit box for boss
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 830 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			//player bullet cause damage
 			if (playerBullet != null && boss != null && boss.makeHit(playerBullet)) {
 				boss.flashing();
@@ -398,12 +420,12 @@ public class Panel extends JPanel{
 		
 		playerBeingAttack();
 		
-		if(playerIsDucking) {
+		if(playerIsDucking && !levelUp) {
 			player.ducking(isRight);
 		}
 		
 		// jumping
-		if(playerIsJumping && canJump){
+		if(playerIsJumping && canJump && !levelUp){
 			jump = 15;
 			gravity = false;
 		}
@@ -439,22 +461,33 @@ public class Panel extends JPanel{
 			player.climb(playerBullet, isRight);
 		}
 		
-		
 		// Defeat boss move up to the next level.
-		if (boss == null && level <2) {
+		if (boss == null && level < 2) {
 			levelUp = true;
+			defeat = "Congratulation! Go to next level";
+		}
+		
+		if (boss == null && level == 2) {
+			winGame = true;
 		}
 		
 		if (levelUp) {
-			level++;
-			map.clear();
-			robots.clear();
-			tileMap.generateMap(level);
-			tileMap.generateEnemy(robots, player, level);
-			map = tileMap.getMap();
-			boss = tileMap.generateBoss(level, player);
-			bossState = false;
-			levelUp = false;
+			if(levelUpDelay == 0) {
+				level++;
+				map.clear();
+				robots.clear();
+				bossBullets.clear();
+				tileMap.generateMap(level);
+				tileMap.generateEnemy(robots, player, level);
+				map = tileMap.getMap();
+				boss = tileMap.generateBoss(level, player);
+				bossState = false;
+				levelUp = false;
+				levelUpDelay = 100;
+				defeat = "";
+			}	else {
+				levelUpDelay--;
+			}
 		}
 	} 
 	
@@ -465,12 +498,12 @@ public class Panel extends JPanel{
 		if(animationPace  == 30) {
 			for (Robot r: robots) {
 				if (r != null) {
-					r.visible = true;
+					r.setVisible(true);
 					r.toggleImage();
 				}
 			}
 			if(boss != null) {
-				boss.visible = true;
+				boss.setVisible(true);
 				if(!bossIsSliding) {
 					boss.toggleImage();
 				}

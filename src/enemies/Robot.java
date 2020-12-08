@@ -11,7 +11,7 @@ public abstract class Robot extends Drawable {
 	private Clip shootSound1 = getSound("../data/rshoot1.wav");
 	private Clip shootSound2 = getSound("../data/rshoot2.wav");
 
-	public boolean visible = true;
+	private boolean visible = true;
 	protected int health = 6;
 	private int dx = 70;
 	private int dy = 20;
@@ -109,11 +109,19 @@ public abstract class Robot extends Drawable {
 		shootSound2.start();
 	}
 	public void flashing() {
-		if (visible) {
-			visible = false;
+		if (isVisible()) {
+			setVisible(false);
 		}
 		else {
-			visible = true;
+			setVisible(true);
 		}
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }

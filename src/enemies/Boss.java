@@ -15,8 +15,8 @@ public abstract class Boss extends Drawable{
 	private Clip gun = getSound("../data/gun.wav");
 	private Clip ice = getSound("../data/ice.wav");
 
-	public boolean visible = true;
-	protected int health = 60;
+	private boolean visible = true;
+	protected int health = 8;
 	private int dx = 0;
 	private Direction d = Direction.LEFT;
 	
@@ -90,11 +90,11 @@ public abstract class Boss extends Drawable{
 	public abstract Type attack();
 	
 	public void flashing() {
-		if (visible) {
-			visible = false;
+		if (isVisible()) {
+			setVisible(false);
 		}
 		else {
-			visible = true;
+			setVisible(true);
 		}
 	}
 
@@ -139,6 +139,14 @@ public abstract class Boss extends Drawable{
 				d = Direction.LEFT;
 			}	
 		}
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }
 	

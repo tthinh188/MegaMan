@@ -20,7 +20,6 @@ public class IceBerg extends Bullet{
 		setHeight(getImage("../data/ice_berg.png").getHeight(null));
 		setWidth(getImage("../data/ice_berg.png").getWidth(null));
 		img = ImageTransparent.makeTransparent(getImage("../data/ice_berg.png"));
-
 	}
 	
 	@Override
@@ -52,5 +51,4 @@ public class IceBerg extends Bullet{
 	public void paint(Graphics2D g) {
         g.drawImage(img, getLocation().x, getLocation().y, null);				
 	}
-
 }

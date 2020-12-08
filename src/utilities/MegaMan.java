@@ -281,6 +281,7 @@ public class MegaMan extends Drawable{
 			}
 		}
 	}
+	
 	public void shoot() {
 		shootSound.setFramePosition(0);
 		shootSound.start();

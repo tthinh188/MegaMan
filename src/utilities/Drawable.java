@@ -51,6 +51,7 @@ public abstract class Drawable {
         }
         return clip;
     }
+	
 	public Image getImage(String filename) {
 	        URL url = getClass().getResource(filename);
 	        ImageIcon icon = new ImageIcon( url );

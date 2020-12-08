@@ -167,5 +167,4 @@ public class MegaManGame extends JFrame{
 	        }
         });
 	}
-
 }

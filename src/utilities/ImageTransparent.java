@@ -25,6 +25,6 @@ public class ImageTransparent {
      public static Image makeTransparent(Image i) {
     	 ImageProducer filteredImgProd = new FilteredImageSource(i.getSource(), filter);
     	 Image transparentImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
-		return transparentImg;
+    	 return transparentImg;
      }
 }

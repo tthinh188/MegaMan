@@ -24,7 +24,7 @@ public class TwoGun extends Robot{
 	
 	@Override
 	public void paint(Graphics2D g) {
-		if (visible)
+		if (isVisible())
 	        g.drawImage(image, getLocation().x, getLocation().y, null);	
 	}
 }

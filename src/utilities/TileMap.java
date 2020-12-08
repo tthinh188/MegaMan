@@ -256,7 +256,6 @@ public class TileMap {
 		}
 		else {
 			return new Bear(950,1870, player);
-
 		}
 	}
 }

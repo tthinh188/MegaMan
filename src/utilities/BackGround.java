@@ -14,5 +14,4 @@ public class BackGround extends Drawable{
 	public void paint(Graphics2D g) {
         g.drawImage(i, getLocation().x, getLocation().y, null);
 	}
-
 }

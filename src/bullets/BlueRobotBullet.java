@@ -50,10 +50,9 @@ public class BlueRobotBullet extends Bullet {
 		bulletB = ImageTransparent.makeTransparent(getImage("../data/blue_robot_bulletB.png"));
 		leftA = ImageTransparent.makeTransparent(getImage("../data/blue_robot_bullet_leftA.png"));
 	}
-
+	
 	@Override
 	public void paint(Graphics2D g) {
         g.drawImage(currentImage, getLocation().x, getLocation().y, null);
 	}
-
 }

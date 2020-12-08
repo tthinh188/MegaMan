@@ -23,6 +23,7 @@ public class Fire extends Bullet{
 		generateImage();
 		img = fireA;
 	}
+	
 	@Override
 	public void toggleImage(Direction d) {
 		if (animationTime == 0) {
@@ -55,14 +56,17 @@ public class Fire extends Bullet{
 			waitTime = 5;
 		}
 	}
+	
 	@Override
 	public int power() {
 		return power;
 	}
+	
 	@Override
 	public Direction direction() {
 		return direction;
 	}
+	
 	@Override
 	public void paint(Graphics2D g) {
         g.drawImage(img, getLocation().x, getLocation().y, null);				

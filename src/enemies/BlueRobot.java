@@ -26,10 +26,10 @@ public class BlueRobot extends Robot{
 	
 	@Override
 	public void paint(Graphics2D g) {
-		if (visible)
+		if (isVisible())
 	        g.drawImage(currentImage, getLocation().x, getLocation().y, null);		
 	}
-
+	
 	@Override
 	public void toggleImage() {
 		if (this.getLocation().x > player.getLocation().x) {

@@ -31,7 +31,7 @@ public class Wing extends Robot{
 	
 	@Override
 	public void paint(Graphics2D g) {
-		if (visible)
+		if (isVisible())
 	        g.drawImage(currentImage, getLocation().x, getLocation().y, null);		
 	}
 

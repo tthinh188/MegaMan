@@ -60,5 +60,4 @@ public class RedRobotBullet extends Bullet {
 	public void paint(Graphics2D g) {
         g.drawImage(currentImage, getLocation().x, getLocation().y, null);		
 	}
-
 }
