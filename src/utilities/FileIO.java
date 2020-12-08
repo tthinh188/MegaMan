@@ -49,12 +49,7 @@ public class FileIO {
 			String levelInfo = scanner.nextLine();
 			String[] token = levelInfo.split(", ");
 			panel.setLevel(Integer.valueOf(token[0]));
-			if(token[1].equals("true")) {
-				panel.setState(true);
-			}
-			else {
-				panel.setState(false);
-			}
+			panel.setState(Boolean.valueOf(token[1]));
 						
 			while(scanner.hasNextLine()) {
 				String info = scanner.nextLine();
@@ -87,7 +82,6 @@ public class FileIO {
 				else if (token[0].equals("Gate")) {
 					Gate gate = new Gate(Integer.valueOf(token[1]),Integer.valueOf(token[2]));
 					if(token[3].equals("true")) {
-						System.out.println(token[3]);
 						gate.visible = true;
 					}
 					map.add(gate);

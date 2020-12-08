@@ -845,7 +845,7 @@ public class Panel extends JPanel {
 	}
 	
 	private boolean checkGameOver() {
-		return player.health() == 0 && player.live() == 0;
+		return player.health() == 0 && player.live() <= 0;
 	}
 	
 	private void checkCanJump() {
