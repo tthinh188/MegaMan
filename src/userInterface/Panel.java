@@ -61,9 +61,6 @@ public class Panel extends JPanel {
 	private static final String ARIAL = "Arial";
 	private String defeat = "";
 	
-	// TODO delete me
-	boolean goingDown = false, goingUp = false;
-	
 	public Panel() {
 		setFocusable(true);
 		
@@ -106,13 +103,6 @@ public class Panel extends JPanel {
 				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 					playerIsShooting = true;
 				}
-				
-				
-				//TODO delete
-				if(e.getKeyCode() == KeyEvent.VK_S) {
-					goingDown = true; }
-				if(e.getKeyCode() == KeyEvent.VK_W) {
-					goingUp = true; }
 			}
 			
 			@Override
@@ -159,14 +149,6 @@ public class Panel extends JPanel {
 						power = 0;
 					}
 				}
-				
-				//TODO delete
-				if(e.getKeyCode() == KeyEvent.VK_S) {
-					goingDown = false;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_W) {
-					goingUp = false;
-				}
 			}
 		});
 	
@@ -174,16 +156,6 @@ public class Panel extends JPanel {
 			if(!music.isRunning()) {
 				music.setFramePosition(0);
 				music.start();
-			}
-			
-			//TODO delete
-			if(goingDown) {
-				player.move(Drawable.Direction.DOWN, 20);
-				fallDistance += 20;
-			}
-			if(goingUp) {
-				player.move(Drawable.Direction.UP, 20);
-				fallDistance -= 20;
 			}
 			alwaysActions();
 			repaint();

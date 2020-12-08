@@ -16,7 +16,7 @@ public abstract class Boss extends Drawable{
 	private Clip ice = getSound("../data/ice.wav");
 
 	private boolean visible = true;
-	protected int health = 8;
+	protected int health = 60;
 	private int dx = 0;
 	private Direction d = Direction.LEFT;
 	
