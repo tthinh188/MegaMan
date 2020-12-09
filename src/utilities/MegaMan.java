@@ -1,6 +1,7 @@
 package utilities;
 
 import enemies.*;
+import userInterface.Panel;
 import bullets.*;
 
 import java.awt.Graphics2D;
@@ -26,9 +27,11 @@ public class MegaMan extends Drawable{
 	private int animationTime = 7;
 	private boolean playerIsStanding = true;
 	private Image currentImage;
+	private Panel panel;
 	
-	public MegaMan() {
+	public MegaMan(Panel panel) {
 		super();
+		this.panel = panel;
 		generateImage();
     	setX(350);
     	setY(350);
@@ -39,6 +42,20 @@ public class MegaMan extends Drawable{
 		currentImage = megaStand;
 	}
 		
+	private void playHurtSound() {
+		if(!panel.isMuted()) {
+			hurtSound.setFramePosition(0);
+			hurtSound.start();
+		}
+	}
+	
+	private void healthDecrement() {
+		if (health <= 0 && lives != 0) {
+			lives -=1;
+			health = 15;
+		}
+	}
+	
 	public int getHspeed() {
 		return hspeed;
 	}
@@ -283,8 +300,10 @@ public class MegaMan extends Drawable{
 	}
 	
 	public void shoot() {
-		shootSound.setFramePosition(0);
-		shootSound.start();
+		if(!panel.isMuted()) {
+			shootSound.setFramePosition(0);
+			shootSound.start();
+		}
 	}
 	
 	public int getInvulnerableTime() {
@@ -309,16 +328,9 @@ public class MegaMan extends Drawable{
 					
 					if(invulnerableTime == 100) {
 						health -= b.power();
-						hurtSound.setFramePosition(0);
-						hurtSound.start();
+						playHurtSound();
 					}
-					
-					if(health <= 0) {
-						if (lives != 0) {
-							lives -=1;
-							health = 15;
-						}
-					}
+					healthDecrement();
 					return true;
 				}
 			}
@@ -333,16 +345,9 @@ public class MegaMan extends Drawable{
 					
 					if(invulnerableTime == 100) {
 						health -= 1;
-						hurtSound.setFramePosition(0);
-						hurtSound.start();
+						playHurtSound();
 					}
-					
-					if (health ==0) {
-						if (lives != 0) {
-							lives -=1;
-							health = 15;
-						}
-					}
+					healthDecrement();
 					return true;
 				}
 			}
@@ -356,16 +361,9 @@ public class MegaMan extends Drawable{
 				invulnerableTime = 100;
 				if(invulnerableTime == 100) {
 					health -= 1;
-					hurtSound.setFramePosition(0);
-					hurtSound.start();
+					playHurtSound();
 				}
-				if(health <= 0) {
-					if(lives != 0) {
-						lives -=1;
-						health = 15;
-					}
-					
-				}
+				healthDecrement();
 				return true;
 			}
 		}
@@ -380,15 +378,9 @@ public class MegaMan extends Drawable{
 				invulnerableTime = 100;
 				if(invulnerableTime == 100) {
 					health -= b.power();
-					hurtSound.setFramePosition(0);
-					hurtSound.start();
+					playHurtSound();
 				}
-				if(health <= 0) {
-					if(lives != 0) {
-						lives -=1;
-						health = 15;
-					}
-				}
+				healthDecrement();
 				return true;
 			}
 		}

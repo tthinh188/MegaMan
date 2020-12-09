@@ -49,6 +49,7 @@ public class Panel extends JPanel {
 	private BlueRobotBullet brb;
 	private TwoGunBullet lg, rg;
 	private Clip music = getSound("../data/bgmusic.wav");
+	private boolean isMuted = false;
 	private int distanceTravel = 0, fallDistance = 0, jump, animationPace = 0, attackPace = 0;
 	
 	private int power = 0;
@@ -65,7 +66,7 @@ public class Panel extends JPanel {
 		setFocusable(true);
 		
 		// initial set up.
-		player = new MegaMan();
+		player = new MegaMan(this);
 		tileMap.generateMap(level);
 		tileMap.generateEnemy(robots, player, level);
 		map = tileMap.getMap();
@@ -153,7 +154,7 @@ public class Panel extends JPanel {
 		});
 	
 		t = new Timer( 10, e -> {
-			if(!music.isRunning()) {
+			if(!music.isRunning() && ! isMuted) {
 				music.setFramePosition(0);
 				music.start();
 			}
@@ -241,7 +242,7 @@ public class Panel extends JPanel {
 	    g.drawString(defeat, 220, 400);
 
 	    // entering the boss battle show up boss's health.
-		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 800 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
+		if (boss != null && (boss.getLocation().x - player.getLocation().x) < 850 && (boss.getLocation().x - player.getLocation().x) > - 830 && boss.getLocation().y > 50 && boss.getLocation().y < 900) {
 			g.setColor(Color.RED);
 		    g.drawRect(899,79,26,151);
 			g.setColor(Color.GREEN);
@@ -270,7 +271,6 @@ public class Panel extends JPanel {
 		    else {
 		    	levelUpDelay--;
 		    }
-		   
 	    }
 	}
 	
@@ -357,7 +357,9 @@ public class Panel extends JPanel {
 				if(r != null && r.makeHit(playerBullet)) {
 						r.flashing();
 					if(r.hasDied()) {
-						r.disapear();
+						if(!isMuted()) {
+							r.disapear();
+						}
 						robots.remove(r);
 						break;
 					}
@@ -382,7 +384,9 @@ public class Panel extends JPanel {
 			if (playerBullet != null && boss != null && boss.makeHit(playerBullet)) {
 				boss.flashing();
 				if(boss.hasDied()) {
-					boss.disapear();
+					if(!isMuted()) {
+						boss.disapear();
+					}
 					boss = null;
 				}
 			}
@@ -845,7 +849,7 @@ public class Panel extends JPanel {
 	}
 	
 	private boolean checkGameOver() {
-		return player.health() == 0 && player.live() <= 0;
+		return player.health() <= 0 && player.live() == 0;
 	}
 	
 	private void checkCanJump() {
@@ -871,27 +875,35 @@ public class Panel extends JPanel {
 					if(rrb == null) {
 						rrb = new RedRobotBullet(
 								new Point(robots.get(chance).getLocation().x, robots.get(chance).getLocation().y + robots.get(chance).height()/3), Drawable.Direction.LEFT);
-						robots.get(chance).shoot2();
+						if(!isMuted()) {
+							robots.get(chance).shoot2();
+						}
 					}
 				}
 				else if (robots.get(chance).getClass().equals(Wing.class)) {
 					if(wb == null) {
 						wb = new WingBullet(
 								new Point(robots.get(chance).getLocation().x, robots.get(chance).getLocation().y + robots.get(chance).height()/2), Drawable.Direction.LEFT);
-						robots.get(chance).shoot1();
+						if(!isMuted()) {
+							robots.get(chance).shoot1();
+						}
 					}
 				}
 				else if (robots.get(chance).getClass().equals(BlueRobot.class)) {
 					if(brb == null) {
 						brb = new BlueRobotBullet(
 								new Point(robots.get(chance).getLocation().x, robots.get(chance).getLocation().y + robots.get(chance).height()/3), Drawable.Direction.LEFT);
-					robots.get(chance).shoot2();
+						if(!isMuted()) {
+							robots.get(chance).shoot2();
+						}
 					}
 				}
 				else if(robots.get(chance).getClass().equals(TwoGun.class) && lg == null && rg == null) {
 					lg = new TwoGunBullet(new Point(robots.get(chance).getLocation().x, robots.get(chance).getLocation().y + robots.get(chance).height()), Drawable.Direction.LEFT);
 					rg = new TwoGunBullet(new Point(robots.get(chance).getLocation().x + robots.get(chance).width(), robots.get(chance).getLocation().y + robots.get(chance).height()), Drawable.Direction.RIGHT);
-					robots.get(chance).shoot1();
+					if(!isMuted()) {
+						robots.get(chance).shoot1();
+					}
 				}
 			}
 			
@@ -1010,6 +1022,7 @@ public class Panel extends JPanel {
 				if(boss.getDelayTime() == 400) {
 					bossIsSliding = true;
 				}
+				
 				else if(boss.getDelayTime() == 1) {
 					bossIsSliding = false;
 				}
@@ -1040,8 +1053,18 @@ public class Panel extends JPanel {
 	}
 	
 	// stop music when user is using the menu
-	public void stopMusic() {
+	public void volumeOff() {
+		isMuted = true;
 		music.stop();
+	}
+	
+	public void volumeOn() {
+		isMuted = false;
+		music.start();
+	}
+	
+	public boolean isMuted() {
+		return isMuted;
 	}
 	
 	// get Background music

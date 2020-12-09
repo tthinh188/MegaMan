@@ -16,7 +16,7 @@ public class FileIO {
 	public static void save(Panel panel, MegaMan player, ArrayList<MapObject> map, ArrayList<Robot> robots, Boss boss) {
 		String info = "";
 		try {
-			FileOutputStream file = new FileOutputStream("src/game_data/game_data.txt");
+			FileOutputStream file = new FileOutputStream("game_data.txt");
 			OutputStreamWriter writer = new OutputStreamWriter(file);
 			info += String.format("%d, %s", panel.getLevel(), String.valueOf(panel.getState())) + System.lineSeparator();
 			info += String.format("%s, %d, %d", player.getTag(), player.health(), player.live()) + System.lineSeparator();
@@ -44,7 +44,7 @@ public class FileIO {
 	
 	public static Boss load(Panel panel, MegaMan player, ArrayList<MapObject> map, ArrayList<Robot> robots, Boss boss) {
 		try {
-			FileReader file = new FileReader("src/game_data/game_data.txt");
+			FileReader file = new FileReader("game_data.txt");
 			Scanner scanner = new Scanner(file);
 			String levelInfo = scanner.nextLine();
 			String[] token = levelInfo.split(", ");
