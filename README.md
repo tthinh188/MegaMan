@@ -34,5 +34,5 @@ Tutorial:
 
 Movement: Press left arrow button to move left, right arrow button for move right, and up arrow button to jump.
 
-Shooting: Press and release the spacebar button to shoot. The longer the player pressing the spacebar button, the stronger he shoots.
+Shooting: Press and release the spacebar button to shoot. The longer the player presses the spacebar button, the stronger he shoots.
 
