@@ -256,7 +256,7 @@ public class Panel extends JPanel {
 	    	g.setFont( new Font(ARIAL, Font.PLAIN, 80 ));
 		    g.setColor(Color.GREEN);
 		    g.drawString("Game Over", 320, 400);
-		    t.stop();
+		    pauseGame(true);
 	    }
 	    
 	    if(winGame) {
@@ -266,7 +266,7 @@ public class Panel extends JPanel {
 		    g.drawString("You Win", 320, 400);
 		    
 		    if(levelUpDelay == 0) {
-		    	t.stop();
+			    pauseGame(true);
 		    }
 		    else {
 		    	levelUpDelay--;
@@ -522,7 +522,7 @@ public class Panel extends JPanel {
 	
 	//load game
 	public void load() {
-		t.start();
+		t.start();	
 		map.clear();
 		robots.clear();
 		bossBullets.clear();
