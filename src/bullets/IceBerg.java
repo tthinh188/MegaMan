@@ -1,7 +1,6 @@
-package enemies;
+package bullets;
 
 import utilities.*;
-import bullets.*;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
