@@ -109,7 +109,6 @@ public class DarkRaise extends Boss{
 			isFiring = false;
 			random = (int) (Math.random()* 4); 
 			if (random == 0) {
-				this.shoot1();
 				type = Type.WING;
 				delayTime = 200;
 				isFiring = true;
@@ -118,7 +117,6 @@ public class DarkRaise extends Boss{
 			}
 			else if (random == 1) {
 				type = Type.MISSILE;
-				this.gun();
 				delayTime = 400;
 				isFiring = true;
 				toggleImage();
@@ -126,7 +124,6 @@ public class DarkRaise extends Boss{
 			}
 			else if(random == 2){
 				type = Type.SLIDE;
-				this.shoot2();
 				setY(this.getLocation().y + 99);
 				setWidth(getImage("../data/boss_slide_leftA.png").getWidth(null));
 				setHeight(getImage("../data/boss_slide_leftA.png").getHeight(null));
@@ -147,7 +144,6 @@ public class DarkRaise extends Boss{
 				isFiring = false;
 			}
 			if(delayTime == 200 && type == Type.MISSILE) {
-				this.gun();
 				return type;
 			}
 			if(delayTime == 400 && type == Type.COMBO) {
@@ -164,7 +160,6 @@ public class DarkRaise extends Boss{
 			}
 			
 			if(delayTime == 1 && type == Type.SLIDE) {
-				this.shoot1();
 				setY(this.getLocation().y - 99);
 				setWidth(getImage("../data/boss_left.png").getWidth(null));
 				setHeight(getImage("../data/boss_left.png").getHeight(null));

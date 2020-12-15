@@ -64,25 +64,21 @@ public class Bear extends Boss{
 			if (random == 0) {
 				delayTime = 500;
 				type = Type.ICE;
-				this.ice();
 				return type;
 			}
 			if (random == 1) {
 				delayTime = 330;
 				type = Type.FIRE;
-				this.burning();
 				return type;
 			}
 			
 			if (random == 2) {
-				this.shoot1();
 				type = Type.WING;
 				delayTime = 250;
 				return type;
 			}
 			
 			if (random == 3) {
-				this.shoot2();
 				type = Type.PURPLE;
 				delayTime = 250;
 				return type;
@@ -92,12 +88,10 @@ public class Bear extends Boss{
 		else {
 			delayTime--;
 			if(delayTime == 350 && type == Type.ICE) {
-				this.ice();
 				return type;
 			}
 			
 			if(delayTime == 200 && type == Type.ICE) {
-				this.ice();
 				return type;
 			}
 			

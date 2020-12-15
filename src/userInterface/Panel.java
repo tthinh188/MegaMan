@@ -954,6 +954,9 @@ public class Panel extends JPanel {
 					bossBullets.add(new Missile(new Point(1000,boss.getLocation().y + 150), Drawable.Direction.LEFT));
 					bossBullets.add(new Missile(new Point(1000,boss.getLocation().y + 300), Drawable.Direction.LEFT));
 				}
+				if(!isMuted) {
+					boss.gun();
+				}
 			}
 			else if (type == Boss.Type.WING) {
 				bossBullets.add(new WingBullet(new Point(0,boss.getLocation().y), Drawable.Direction.RIGHT));
@@ -961,15 +964,24 @@ public class Panel extends JPanel {
 				bossBullets.add(new WingBullet(new Point(1000,boss.getLocation().y + 100), Drawable.Direction.LEFT));
 				bossBullets.add(new WingBullet(new Point((player.getLocation().x + boss.getLocation().x)/2,0), Drawable.Direction.DOWN));
 				bossBullets.add(new WingBullet(new Point((player.getLocation().x + boss.getLocation().x)/2,768), Drawable.Direction.UP));
+				if(!isMuted) {
+					boss.shoot1();
+				}
 			}
 			else if (type == Boss.Type.ICE) {
 				bossBullets.add(new IceBerg(new Point(player.getLocation().x,0)));
+				if(!isMuted) {
+					boss.ice();
+				}
 			}
 			
 			else if (type == Boss.Type.FIRE) {
 				if(!fire) {
 					bossBullets.clear();
 					fire = true;
+					if(!isMuted) {
+						boss.burning();
+					}
 				}
 				if (boss.getDelayTime() == 1){
 					fire = false;
@@ -988,6 +1000,9 @@ public class Panel extends JPanel {
 				bossBullets.add(new RedRobotBullet(new Point(1048,boss.getLocation().y + 20), Drawable.Direction.LEFT));
 				bossBullets.add(new RedRobotBullet(new Point(1048,boss.getLocation().y + 70), Drawable.Direction.LEFT));
 				bossBullets.add(new RedRobotBullet(new Point(1048,boss.getLocation().y + 120), Drawable.Direction.LEFT));
+				if(!isMuted) {
+					boss.shoot2();
+				}
 			}
 			
 			else if (type == Boss.Type.COMBO) {
@@ -1016,11 +1031,17 @@ public class Panel extends JPanel {
 					bossBullets.add(new TwoGunBullet(new Point(0,50), Drawable.Direction.RIGHT));
 					bossBullets.add(new TwoGunBullet(new Point(1048,0), Drawable.Direction.LEFT));
 					bossBullets.add(new TwoGunBullet(new Point(1048,50), Drawable.Direction.LEFT));
-				}				
+				}			
+				if(!isMuted) {
+					boss.shoot1();
+				}
 			}
 			else if (type == Boss.Type.SLIDE)	{
 				if(boss.getDelayTime() == 400) {
 					bossIsSliding = true;
+					if(!isMuted) {
+						boss.shoot2();
+					}
 				}
 				
 				else if(boss.getDelayTime() == 1) {
