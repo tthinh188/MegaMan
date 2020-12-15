@@ -36,3 +36,4 @@ Movement: Press left arrow button to move left, right arrow button for move righ
 
 Shooting: Press and release the spacebar button to shoot. The longer the player presses the spacebar button, the stronger he shoots.
 
+Climb: Moving toward the wall with up arrow button to climb the wall.
