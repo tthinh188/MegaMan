@@ -1,5 +1,7 @@
 package userInterface;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -148,11 +150,24 @@ public class MegaManGame extends JFrame{
 		
 		control.addActionListener(e -> controlDialog());
 
+	  addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	if( panel != null ) {
+                	panel.pauseGame(true);
+            	}
+                quitDialog();
+                if( panel != null && !isPaused ) {
+    				panel.pauseGame(false);
+    			}
+            }
+        });   
+		  
 		setJMenuBar(menubar);
 		setSize(1024,768);
 		setResizable(false);
 		setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 	
 	private void controlDialog() {
@@ -170,7 +185,7 @@ public class MegaManGame extends JFrame{
 	}
 	
 	private void quitDialog() {
-        int response = JOptionPane.showConfirmDialog(MegaManGame.this, "Dare to Quit?");
+        int response = JOptionPane.showConfirmDialog(MegaManGame.this, "Do you want to quit?");
         if (response == JOptionPane.YES_OPTION) {
         	remove(panel);
         	panel = null;
